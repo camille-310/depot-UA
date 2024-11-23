@@ -2,6 +2,7 @@
 
 import os
 from reportlab.pdfgen import canvas
+from ebooklib import epub
 
 class base_bibli:
     def __init__(self, path):
@@ -81,8 +82,22 @@ class base_bibli:
         # Créer un canvas pour générer le PDF
         pdf = canvas.Canvas(fichier, pagesize=(width, height))
 
+        # Déterminer le titre en fonction du type de rapport
+        if type_rapport == 'bibliothèque':
+            titre = 'Rapport des livres de la bibliothèque'
+        elif type_rapport == 'auteur':
+            titre = 'Rapport sur les auteurs et leurs oeuvres'
+        else:
+            titre = 'Rapport'
+
+        # Ajouter le titre au début du PDF
+        pdf.setFont("Times-Roman", 16)
+        pdf.drawString(50, height - 50, titre)  # Position du titre au haut de la page
+
+        
         # Ajouter le contenu ligne par ligne
-        y = height - 50  # Position de départ en haut de la page
+        y = height - 100  # Position de départ en haut de la page
+        pdf.setFont("Times-Roman", 12)
         for ligne in contenu.split("\n"):  # découpe le contenue en une liste de chacune de ses lignes
             pdf.drawString(50, y, ligne)  # Ajouter la ligne à la position x=50, y=y
             y -= 15  # Descendre de 15 points pour la prochaine ligne
