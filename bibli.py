@@ -39,7 +39,7 @@ class base_bibli:
             contenu += f"Fichier : {livre.ressource}\n\n"
 
         if format == "PDF":
-            self._generer_pdf(fichier, contenu)
+            self._generer_pdf(fichier, contenu, type_rapport='bibliothèque')
         elif format == "EPUB":
             self._generer_epub(fichier, contenu, type_rapport='bibliothèque')
 
@@ -70,7 +70,7 @@ class base_bibli:
             contenu += "\n"
 
         if format == "PDF":
-            self._generer_pdf(fichier, rapport)
+            self._generer_pdf(fichier, rapport, type_rapport='auteur')
         elif format == "EPUB":
             self._generer_epub(fichier, rapport, type_rapport='auteur')
 
