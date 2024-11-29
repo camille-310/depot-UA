@@ -46,3 +46,14 @@ class PDF(base_livre):
 
     def date(self):
         return self._date
+
+if __name__ == "__main__":
+
+    Pdf = PDF('./about_a_b_c_du_travailleur.pdf')
+
+    print("Type :", Pdf.type())
+    print("Titre :", Pdf.titre())
+    print("Auteur :", Pdf.auteur())
+    print("Langue :", Pdf.langue())
+    print("Sujet :", Pdf.sujet())
+    print("Date :", Pdf.date())
