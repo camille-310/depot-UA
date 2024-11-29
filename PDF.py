@@ -1,14 +1,18 @@
 #!/bin/env python
 
 import os
-from base_livre import base_livre
+from base_livre import *
+from fonctions import *
 from PyPDF2 import PdfReader
 from langdetect import detect
 
 class PDF(base_livre):
 
-    def __init__(self,ressource): # on part du principe que c'est un fichier
-        self.ressource = ressource
+    def __init__(self,ressource): # c'est un fichier local ou une url
+        if "https" in ressource:   # si c'est une url
+            self.ressource = telecharger_url(ressource,'bibliothèque')     # voir fonction telecharger_url dans fonctions
+        else:     # si c'est un fichier local
+            self.ressource = ressource
         document = PdfReader(open(self.ressource, 'rb'))
         self.metadata = document.metadata
         self._type = "PDF"
@@ -17,7 +21,6 @@ class PDF(base_livre):
         self._langue = self.metadata.get('/Lang')
         self._sujet = self.metadata.get('/Subject', 'Sujet inconnu')
         self._date = self.metadata.get('/CreationDate', 'Date inconnue')
-
 
     def type(self):
         return self._type
@@ -49,11 +52,21 @@ class PDF(base_livre):
 
 if __name__ == "__main__":
 
-    Pdf = PDF('./bibliothèque/about_a_b_c_du_travailleur.pdf')   # le fichier est enregistré dans le dossier bibliothèque
+    fichier_pdf = PDF('./bibliothèque/about_a_b_c_du_travailleur.pdf')
 
-    print("Type :", Pdf.type())
-    print("Titre :", Pdf.titre())
-    print("Auteur :", Pdf.auteur())
-    print("Langue :", Pdf.langue())
-    print("Sujet :", Pdf.sujet())
-    print("Date :", Pdf.date())
+    print("Type :", fichier_pdf.type())
+    print("Titre :", fichier_pdf.titre())
+    print("Auteur :", fichier_pdf.auteur())
+    print("Langue :", fichier_pdf.langue())
+    print("Sujet :", fichier_pdf.sujet())
+
+    print("Date :", fichier_pdf.date())
+
+    url_pdf = PDF('https://math.univ-angers.fr/~jaclin/biblio/livres/aicard_illustre_maurin.pdf')
+
+    print("Type :", url_pdf.type())
+    print("Titre :", url_pdf.titre())
+    print("Auteur :", url_pdf.auteur())
+    print("Langue :", url_pdf.langue())
+    print("Sujet :", url_pdf.sujet())
+    print("Date :", url_pdf.date())
