@@ -52,7 +52,7 @@ class EPUB(base_livre):
 
 if __name__ == "__main__":
 
-  epub = EPUB('./adam_paul_-_le_conte_futur.epub')
+  epub = EPUB('./bibliothèque/adam_paul_-_le_conte_futur.epub')    # le fichier est enregistré dans le dossier bibliothèque
 
   print("Titre:", epub.titre())
   print("Auteur:", epub.auteur())
