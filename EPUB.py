@@ -1,13 +1,17 @@
 #!/bin/env python
 
 import os
-from base_livre import base_livre
+from base_livre import *
+from fonctions import *
 from ebooklib import epub
 
 class EPUB(base_livre):
 
-    def __init__(self,ressource): # on part du principe que c'est un fichier
-        self.ressource = ressource
+    def __init__(self,ressource):
+        if "https" in ressource:    # si c'est une url :
+            self.ressource = telecharger_url(ressource,'bibliothèque')
+        else:                       # si c'est un fichier :
+            self.ressource = ressource
         book = epub.read_epub(self.ressource)
         self._type = "EPUB"
         self._titre = book.get_metadata('DC', 'title')[0][0]
@@ -52,14 +56,23 @@ class EPUB(base_livre):
 
 if __name__ == "__main__":
 
-  epub = EPUB('./bibliothèque/adam_paul_-_le_conte_futur.epub')    # le fichier est enregistré dans le dossier bibliothèque
+    fichier_epub = EPUB('./bibliothèque/adam_paul_-_le_conte_futur.epub')   # on teste avec un fichier local (déjà téléchargé)
 
-  print("Titre:", epub.titre())
-  print("Auteur:", epub.auteur())
-  print("Type:", epub.type())
-  print("Langue:", epub.langue())
-  print("Date:", epub.date())
-  print("Sujet:", epub.sujet())
+    print("Titre:", fichier_epub.titre())
+    print("Auteur:", fichier_epub.auteur())
+    print("Type:", fichier_epub.type())
+    print("Langue:", fichier_epub.langue())
+    print("Date:", fichier_epub.date())
+    print("Sujet:", fichier_epub.sujet())
+
+    url_epub = EPUB('https://math.univ-angers.fr/~jaclin/biblio/livres/aimard_gustave_-_jim_l_indien.epub')   # on teste avec une url
+
+    print("Titre:", url_epub.titre())
+    print("Auteur:", url_epub.auteur())
+    print("Type:", url_epub.type())
+    print("Langue:", url_epub.langue())
+    print("Date:", url_epub.date())
+    print("Sujet:", url_epub.sujet())
 
 
 
