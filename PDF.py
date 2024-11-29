@@ -49,7 +49,7 @@ class PDF(base_livre):
 
 if __name__ == "__main__":
 
-    Pdf = PDF('./about_a_b_c_du_travailleur.pdf')
+    Pdf = PDF('./bibliothèque/about_a_b_c_du_travailleur.pdf')   # le fichier est enregistré dans le dossier bibliothèque
 
     print("Type :", Pdf.type())
     print("Titre :", Pdf.titre())
