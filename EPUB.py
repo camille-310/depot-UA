@@ -2,18 +2,19 @@
 
 import os
 from base_livre import base_livre
+from ebooklib import epub
 
 class EPUB(base_livre):
 
     def __init__(self,ressource): # on part du principe que c'est un fichier
         self.ressource = ressource
-        book = ebooklib_epub.read_epub(self.ressource)
+        book = epub.read_epub(self.ressource)
         self._type = "EPUB"
         self._titre = book.get_metadata('DC', 'title')[0][0]
         self._auteur = book.get_metadata('DC', 'creator')[0][0]
         self._langue = book.get_metadata('DC', 'language')[0][0]
         self._sujet = book.get_metadata('DC', 'subject')[0][0]
-        self._date = book.get_metadata('DC', 'date')[0][0]
+        self._date = book.get_metadata('DC', 'date')
 
 
     def type(self):
@@ -49,6 +50,16 @@ class EPUB(base_livre):
         else:
             return 'Date inconnue'
 
+if __name__ == "__main__":
+
+  epub = EPUB('./adam_paul_-_le_conte_futur.epub')
+
+  print("Titre:", epub.titre())
+  print("Auteur:", epub.auteur())
+  print("Type:", epub.type())
+  print("Langue:", epub.langue())
+  print("Date:", epub.date())
+  print("Sujet:", epub.sujet())
 
 
 
