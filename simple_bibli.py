@@ -6,10 +6,10 @@ from EPUB import *
 from PDF import *
 from reportlab.pdfgen import canvas
 from base_bibli import *
-from fonctions import _generer_epub, _generer_pdf, type_contenu
+from fonctions import _generer_epub, _generer_pdf
 
 class simple_bibli(base_bibli):
-
+    
     def __init__(self, path):
         if not os.path.exists(path):
             os.makedirs(path)
@@ -21,9 +21,9 @@ class simple_bibli(base_bibli):
         for fichier in os.listdir(self.repertoire):
             chemin_complet = os.path.join(self.repertoire, fichier)
             if os.path.isfile(chemin_complet):
-                if type_contenu(fichier)=="EPUB":
+                if fichier.lower().endswith('.epub'):
                     self.livres.append(EPUB(chemin_complet))
-                elif type_contenu(fichier)=="PDF":
+                elif fichier.lower().endswith('.pdf'):
                     self.livres.append(PDF(chemin_complet))
 
     def ajouter(self, livre):
@@ -33,11 +33,11 @@ class simple_bibli(base_bibli):
         if not os.path.exists(destination):  # on vérifie que le livre n'est pas déjà dans le répertoire
             shutil.copy(livre.ressource, destination)
             self.livres.append(livre)
-
+    
     def rapport_livres(self, format, fichier):
         if format not in self.formats:
             raise ValueError("Le format n'est pas accepté.")
-
+        
         contenu = "Liste des livres dans la bibliothèque :\n\n"
         i = 1
         for livre in self.livres:
@@ -87,7 +87,6 @@ class simple_bibli(base_bibli):
         elif format == "EPUB":
             _generer_epub(self, fichier, contenu)
 
-
 if __name__ == "__main__":
 
     répertoire = simple_bibli('bibliothèque_new')  # on créé ici une nouvelle bibliothèque
@@ -104,7 +103,7 @@ if __name__ == "__main__":
     répertoire.ajouter(pdf1)
     répertoire.ajouter(pdf2)
     répertoire.ajouter(pdf3)
-
+  
     # rapports au format EPUB :
     répertoire.rapport_livres("EPUB", "rapport_livres.epub")
     répertoire.rapport_auteurs("EPUB", "rapport_auteurs.epub")
