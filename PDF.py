@@ -52,7 +52,7 @@ class PDF(base_livre):
 
 if __name__ == "__main__":
 
-    fichier_pdf = PDF('./bibliothèque/about_a_b_c_du_travailleur.pdf')
+    fichier_pdf = PDF('./bibliothèque/about_a_b_c_du_travailleur.pdf')   # test avec un fichier local (enregistré dans un dossier 'bibliothèque')
 
     print("Type :", fichier_pdf.type())
     print("Titre :", fichier_pdf.titre())
@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
     print("Date :", fichier_pdf.date())
 
-    url_pdf = PDF('https://math.univ-angers.fr/~jaclin/biblio/livres/aicard_illustre_maurin.pdf')
+    url_pdf = PDF('https://math.univ-angers.fr/~jaclin/biblio/livres/aicard_illustre_maurin.pdf')   # test avec une url
 
     print("Type :", url_pdf.type())
     print("Titre :", url_pdf.titre())
