@@ -9,7 +9,7 @@ class EPUB(base_livre):
 
     def __init__(self,ressource):
         if "https" in ressource:    # si c'est une url :
-            self.ressource = telecharger_url(ressource,'bibliothèque')
+            self.ressource = telecharger_url(ressource,'./')
         else:                       # si c'est un fichier :
             self.ressource = ressource
         book = epub.read_epub(self.ressource)
@@ -56,7 +56,7 @@ class EPUB(base_livre):
 
 if __name__ == "__main__":
 
-    fichier_epub = EPUB('./bibliothèque/adam_paul_-_le_conte_futur.epub')   # on teste avec un fichier local (déjà téléchargé)
+    fichier_epub = EPUB('./bibliothèque/adam_paul_-_le_conte_futur.epub')   # on teste avec un fichier local (déjà téléchargé dans un dossier 'bibliothèque')
 
     print("Titre:", fichier_epub.titre())
     print("Auteur:", fichier_epub.auteur())
