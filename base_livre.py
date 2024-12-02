@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/bin/env python
 
 class base_livre:
   def __init__(self,ressource):
