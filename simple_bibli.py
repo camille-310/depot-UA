@@ -6,7 +6,7 @@ from EPUB import *
 from PDF import *
 from reportlab.pdfgen import canvas
 from base_bibli import *
-from fonctions import _generer_epub, _generer_pdf
+from fonctions import _generer_epub, _generer_pdf, type_contenu
 
 class simple_bibli(base_bibli):
 
@@ -21,9 +21,9 @@ class simple_bibli(base_bibli):
         for fichier in os.listdir(self.repertoire):
             chemin_complet = os.path.join(self.repertoire, fichier)
             if os.path.isfile(chemin_complet):
-                if fichier.lower().endswith('.epub'):
+                if type_contenu(fichier)=="EPUB":
                     self.livres.append(EPUB(chemin_complet))
-                elif fichier.lower().endswith('.pdf'):
+                elif type_contenu(fichier)=="PDF":
                     self.livres.append(PDF(chemin_complet))
 
     def ajouter(self, livre):
