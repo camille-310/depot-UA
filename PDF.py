@@ -10,7 +10,7 @@ class PDF(base_livre):
 
     def __init__(self,ressource): # c'est un fichier local ou une url
         if "https" in ressource:   # si c'est une url
-            self.ressource = telecharger_url(ressource,'bibliothèque')     # voir fonction telecharger_url dans fonctions
+            self.ressource = telecharger_url(ressource,'./')     # voir fonction telecharger_url dans fonctions
         else:     # si c'est un fichier local
             self.ressource = ressource
         document = PdfReader(open(self.ressource, 'rb'))
