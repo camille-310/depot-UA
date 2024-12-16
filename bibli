@@ -1,0 +1,82 @@
+#!/bin/env python
+
+import os
+import sys
+import configparser
+import argparse
+from bibli_scrap import *  # Supposé disponible
+
+# Initialisation du parseur d'arguments
+parseur = argparse.ArgumentParser()
+parseur.add_argument("-c","--config", default="bibli.conf")
+parseur.add_argument("commande", nargs="?")
+parseur.add_argument("profondeur", nargs="?", type=int)
+args = parseur.parse_args()
+
+# Lecture du fichier de configuration
+fichier_conf = args.config
+if not os.path.exists(fichier_conf):
+    print(f"Erreur : Le fichier de configuration '{fichier_conf}' est introuvable.")
+    exit(1)
+
+config = configparser.ConfigParser()
+config.read(fichier_conf)
+
+if 'bibli' not in config:
+    print("Erreur : La section [bibli] est absente du fichier de configuration.")
+    exit(1)
+
+try:
+    valeurs = {'bibliotheque': config.get('bibli', 'bibliotheque'),
+                'rapports': config.get('bibli', 'rapports'),
+                'nbmax': config.getint('bibli', 'nbmax')}
+except Exception as e:
+    print(f"Erreur lors de la lecture des paramètres de configuration : {e}")
+    exit(1)
+
+# Fonction de collecte
+def collecte(url, profondeur):
+    try:
+        print(f"Collecte de livres depuis {url} avec une profondeur de {profondeur}...")
+        b = bibli_scrap(valeurs['bibliotheque'])  # Création de l'instance
+        resultat = b.scrap(url, profondeur, valeurs['nbmax'])
+        print(resultat)
+    except Exception as e:
+        print(f"Erreur lors de la collecte : {e}")
+
+# Fonction pour générer les rapports
+def generer_rapports():
+    try:
+        print("Génération des rapports en EPUB et PDF...")
+        b = bibli_scrap(valeurs['bibliotheque'])
+        b.rapport_livres("EPUB", os.path.join(valeurs['rapports'], "rapport_livres.epub"))
+        b.rapport_auteurs("EPUB", os.path.join(valeurs['rapports'], "rapport_auteurs.epub"))
+        b.rapport_livres("PDF", os.path.join(valeurs['rapports'], "rapport_livres.pdf"))
+        b.rapport_auteurs("PDF", os.path.join(valeurs['rapports'], "rapport_auteurs.pdf"))
+        print("Rapports générés avec succès.")
+    except Exception as e:
+        print(f"Erreur lors de la génération des rapports : {e}")
+
+# Gestion des commandes depuis la ligne de commande
+if __name__ == "__main__":
+
+    commande = args.commande
+
+    if commande == "rapports":
+        if not os.path.exists(valeurs['rapports']):
+            os.makedirs(valeurs['rapports'], exist_ok=True)
+        generer_rapports()
+
+    elif "https" in commande:
+        if args.profondeur is None:
+            print("Erreur : Veuillez spécifier également la profondeur pour le scraping.")
+            sys.exit(1)
+        try:
+            collecte(commande, args.profondeur)
+        except ValueError:
+            print("Profondeur doit être un entier.")
+            sys.exit(1)
+
+    else:
+        print(f"Erreur : Commande inconnue ou mal formée : {commande}")
+        sys.exit(1)
